@@ -15,6 +15,36 @@ class ToysContainer extends React.Component{
         whatever: "hello"
     }
 
+    removeToy = (id) => {
+        //update state and remove toy
+        // console.log(this)
+        this.setState(previousState => {
+            // debugger
+            return {
+                toys: previousState.toys.filter(t => t.id !== id)
+            }
+        })
+    }
+
+    addLike = (object) => {
+        //update state and remove toy
+        // console.log(this)
+        this.setState(previousState => {
+            // find the index of the new toy
+            const index = previousState.toys.findIndex(t => t.id === object.id)
+            return {
+                // toys: previousState.toys.filter(t => t.id !== id)
+                toys: [
+                    // all of the toys before the one we updated
+                    ...previousState.toys.slice(0, index), object, ...previousState.toys.slice(index + 1)
+                    // toy object we just got back
+                    //all toys after the one we updated
+                ]
+            }
+        })
+    }
+
+
     makeToyCards(){
         //utilize STATE
         let displayedToys = this.state.toys
@@ -24,7 +54,7 @@ class ToysContainer extends React.Component{
             toy.name.toLowerCase().includes(this.state.search.toLowerCase()))
         }
 
-        return displayedToys.map(toy => <ToyCard toy={toy} id={toy.id} name={toy.name} image={toy.image} likes={toy.likes} />)
+        return displayedToys.map(toy => <ToyCard addLike={this.addLike} removeToy={this.removeToy} toy={toy} id={toy.id} name={toy.name} image={toy.image} likes={toy.likes} />)
     }
 
     // componentDidUpdate(){
